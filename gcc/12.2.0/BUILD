@@ -1,7 +1,7 @@
 ###
 # PLEASE READ https://bazel.build/versions/8.0.0/tutorials/ccp-toolchain-config
 ###
-load("//gcc/12.2.0:cc_toochain_config.bzl", "cc_toolchain_config")
+load("//gcc/12.2.0:cc_toolchain_config.bzl", "cc_toolchain_config")
 # load("//gcc/common/rules:gcc.bzl", "gcc1_toolchain")
 # gcc1_toolchain(
 #     name = "gcc1_linux",
@@ -22,9 +22,15 @@ load("//gcc/12.2.0:cc_toochain_config.bzl", "cc_toolchain_config")
 #     compiler_path = "C:\\path\\on\\windows\\gcc.exe",
 #     # system_lib = "C:\\path\\on\\windows\\gcc.dll",
 # )
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 
+
+package(default_visibility = ["//visibility:public"])
+
+
+filegroup(name = "empty")
 cc_toolchain(
-    name = "cc_toolchain",
+    name = "cc_linux_toolchain",
     toolchain_identifier = "linux_x86_64-toolchain",
     toolchain_config = ":linux_x86_64_toolchain_config",
     all_files = ":empty",
@@ -50,11 +56,11 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    toolchain = ":cc_toolchain",
+    toolchain = ":cc_linux_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
-    visibility = [
-        "//:__pkg__",
-    ],  
+    # visibility = [
+    #     "//:__pkg__",
+    # ],  
 )
 
 # toolchain(
